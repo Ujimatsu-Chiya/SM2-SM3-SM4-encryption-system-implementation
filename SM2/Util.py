@@ -1,6 +1,7 @@
+import Math
+import SM2
 from ECC import ECPoint
-from SM3.SM3 import SM3
-import Math, SM2
+from SM3 import SM3
 
 
 def join(*bytes_lists: bytes):
@@ -11,8 +12,8 @@ def join(*bytes_lists: bytes):
 
 
 # 1-4.2.2 & 1-4.2.6
-def int_2_bytes(n: int, l: int):
-    return n.to_bytes(l, byteorder="big", signed=False)
+def int_2_bytes(n, l):
+    return int(n).to_bytes(l, byteorder="big", signed=False)
 
 
 # 1-4.2.3 & 1-4.2.7
@@ -77,5 +78,5 @@ def KDF(Z: bytearray, klen):
     bytes_len = (klen + 7) // 8
     K = bytearray()
     for ct in range(1, cnt + 1):
-        K += SM3().hash(join(Z, int_2_bytes(ct, 4)))
+        K += SM3.hash(join(Z, int_2_bytes(ct, 4)))
     return K[:bytes_len]

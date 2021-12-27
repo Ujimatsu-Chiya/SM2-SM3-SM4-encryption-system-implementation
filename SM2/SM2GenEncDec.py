@@ -1,9 +1,9 @@
-from Crypto.Random.random import randint
+from Math import randint
 
 import SM2
 import Util
 from SM2KeyPair import SM2KeyPair
-from SM3.SM3 import SM3
+from SM3 import SM3
 from User import User
 
 
@@ -41,7 +41,7 @@ def encrypt(user: User, message: bytearray, op):
     # A6
     C2 = Util.xor_two_array(message, t)
     # A7
-    C3 = SM3().hash(Util.join(x2, message, y2))
+    C3 = SM3.hash(Util.join(x2, message, y2))
     return Util.join(C1, C3, C2)
 
 
@@ -75,7 +75,7 @@ def decrypt(user: User, cipher: bytearray, klen):
     # B5
     M = Util.xor_two_array(C2, t)
     # B6
-    u = SM3().hash(Util.join(x2, M, y2))
+    u = SM3.hash(Util.join(x2, M, y2))
     if u != C3:
         raise ValueError("明文信息M被篡改")
     # B7

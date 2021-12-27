@@ -1,17 +1,16 @@
 from Math import *
-from gmpy2 import is_prime, isqrt
 
 
 class ECCurve:
     def __init__(self, p=None, a=None, b=None, xG=None, yG=None, n=None, h=1):
-        self.p = p
-        self.a = a
-        self.b = b
-        self.xG = xG
-        self.yG = yG
-        self.n = n
-        self.h = h
-        self.l = (p.bit_length() + 7) // 8
+        self.p = mpz(p)
+        self.a = mpz(a)
+        self.b = mpz(b)
+        self.xG = mpz(xG)
+        self.yG = mpz(yG)
+        self.n = mpz(n)
+        self.h = mpz(h)
+        self.l = (p.bit_length() + 7) >> 3
 
     def __eq__(self, other):
         return self.p == other.p and self.a == other.a and self.b == other.b
@@ -32,7 +31,7 @@ class ECCurve:
                (4 * self.a ** 3 - 27 * self.b ** 2) % self.p != 0 and \
                (self.yG ** 2 - (self.xG ** 3 + self.a * self.xG + self.b)) % self.p == 0 and \
                is_prime(self.n) and self.n > (1 << 191) and self.n ** 2 > 16 * self.p and \
-               (self.get_g() * self.n).is_identity() and ((isqrt(self.p) + 1) ** 2 // self.n) == self.h
+               (self.get_g() * self.n).is_identity() and ((int_sqrt(self.p) + 1) ** 2 // self.n) == self.h
 
     # 1-A.1.2.3.2
     def double(self, Q):
@@ -86,7 +85,7 @@ class ECCurve:
 class ECPoint:
     def __init__(self, curve, x, y, z=1):
         self.curve = curve
-        self.x, self.y, self.z = x, y, z
+        self.x, self.y, self.z = mpz(x), mpz(y), mpz(z)
 
     def is_identity(self):
         return self.z == 0
@@ -129,4 +128,3 @@ class ECPoint:
         else:
             Q = self.normalize()
             return "({}, {})".format(Q.x, Q.y)
-

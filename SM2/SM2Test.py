@@ -16,7 +16,6 @@ IDA = "1234567812345678".encode()
 IDB = "1234567812345678".encode()
 uA = User(IDA, SM2KeyPair(dA, SM2.sm2.create_point(xA, yA)))
 uB = User(IDB, SM2KeyPair(dB, SM2.sm2.create_point(xB, yB)))
-
 print("-------------------------签名与验签-------------------------")
 msg = "message digest".encode()
 print("{}的十六进制：".format(msg.decode()))
@@ -55,4 +54,3 @@ print("对消息{}加密的结果(操作2): ".format(msg.decode()))
 Util.bytes_2_hex(c)
 m = SM2GenEncDec.decrypt(uA, c, len(msg) * 8)
 print("对密文解密结果:", m.decode())
-

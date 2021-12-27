@@ -1,6 +1,7 @@
-from Crypto.Random.random import randint
+from Crypto.Random import random
+import gmpy2
 
-
+'''
 # 1-B.1.1
 # pow(a,b,mod)
 
@@ -20,6 +21,23 @@ def inverse(a: int, m: int):
     if x < 0:
         x += m
     return x
+'''
+
+
+def is_prime(n):
+    return gmpy2.is_prime(n, 50)
+
+
+def int_sqrt(n):
+    return gmpy2.isqrt(n)
+
+
+def inverse(a, m):
+    return gmpy2.invert(a, m)
+
+
+def randint(l, r):
+    return mpz(random.randint(int(l), int(r)))
 
 
 # 1-B.1.3
@@ -68,3 +86,6 @@ def get_quadratic_residue(p, g):
                 return V * inv2 % p
             elif U != 1 and U != p - 1:
                 raise ValueError("g不是p内的二次剩余。")
+
+
+mpz = gmpy2.mpz

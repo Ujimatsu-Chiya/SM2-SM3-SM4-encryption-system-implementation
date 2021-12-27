@@ -1,4 +1,4 @@
-from SM3.SM3 import SM3
+from SM3 import SM3
 from SM2KeyPair import SM2KeyPair
 import Util, SM2
 
@@ -13,7 +13,7 @@ class User:
         P = self.sm2_key_pair.public_key.P
         xa = P.get_x()
         ya = P.get_y()
-        return SM3().hash(Util.join(
+        return SM3.hash(Util.join(
             Util.int_2_bytes(len(self.ID) << 3, 2),
             self.ID,
             Util.int_2_bytes(P.curve.a, P.curve.l),

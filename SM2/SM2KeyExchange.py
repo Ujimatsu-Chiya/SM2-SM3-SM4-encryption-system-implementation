@@ -2,7 +2,7 @@ import SM2
 import Util
 from ECC import *
 from SM2KeyPair import SM2KeyPair
-from SM3.SM3 import SM3
+from SM3 import SM3
 from User import User
 
 
@@ -21,6 +21,7 @@ def key_exchange(uA: User, uB: User, klen):
     rB = randint(1, curve.n - 1)
     # B2
     RB = curve.get_g() * rB
+    # B3
     x2, y2 = RB.get_x(), RB.get_y()
     x21 = (1 << w) + (x2 & ((1 << w) - 1))
     # B4
@@ -42,10 +43,10 @@ def key_exchange(uA: User, uB: User, klen):
         uB.get_z()
     ), klen)
     # B8
-    SB = SM3().hash(Util.join(
+    SB = SM3.hash(Util.join(
         b'\x02',
         Util.int_2_bytes(yV, curve.l),
-        SM3().hash(Util.join(
+        SM3.hash(Util.join(
             Util.int_2_bytes(xV, curve.l),
             uA.get_z(),
             uB.get_z(),
@@ -79,10 +80,10 @@ def key_exchange(uA: User, uB: User, klen):
         uB.get_z()
     ), klen)
     # A9
-    S1 = SM3().hash(Util.join(
+    S1 = SM3.hash(Util.join(
         b'\x02',
         Util.int_2_bytes(yU, curve.l),
-        SM3().hash(Util.join(
+        SM3.hash(Util.join(
             Util.int_2_bytes(xU, curve.l),
             uA.get_z(),
             uB.get_z(),
@@ -94,10 +95,10 @@ def key_exchange(uA: User, uB: User, klen):
     if S1 != SB:
         return False
     # A10
-    SA = SM3().hash(Util.join(
+    SA = SM3.hash(Util.join(
         b'\x03',
         Util.int_2_bytes(yU, curve.l),
-        SM3().hash(Util.join(
+        SM3.hash(Util.join(
             Util.int_2_bytes(xU, curve.l),
             uA.get_z(),
             uB.get_z(),
@@ -109,10 +110,10 @@ def key_exchange(uA: User, uB: User, klen):
     # A---->B SA
     # --------------------------------------------------
     # B10
-    S2 = SM3().hash(Util.join(
+    S2 = SM3.hash(Util.join(
         b'\x03',
         Util.int_2_bytes(yV, curve.l),
-        SM3().hash(Util.join(
+        SM3.hash(Util.join(
             Util.int_2_bytes(xV, curve.l),
             uA.get_z(),
             uB.get_z(),

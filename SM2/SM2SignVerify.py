@@ -1,10 +1,10 @@
-from Crypto.Random.random import randint
+
 
 import Math
 import SM2
 import Util
 from SM2KeyPair import SM2KeyPair
-from SM3.SM3 import SM3
+from SM3 import SM3
 from User import User
 
 
@@ -13,12 +13,12 @@ def sign(user: User, message: bytearray):
     # A1
     M1 = Util.join(user.get_z(), message)
     # A2
-    e = Util.bytes_2_int(SM3().hash(M1))
+    e = Util.bytes_2_int(SM3.hash(M1))
     curve = user.sm2_key_pair.public_key.P.curve
 
     while True:
         # A3
-        k = randint(1, curve.n - 1)
+        k = Math.randint(1, curve.n - 1)
         kG = curve.get_g() * k
         # A4
         x1 = kG.get_x()
@@ -47,7 +47,7 @@ def verify(user: User, message: bytearray, signature):
     # B3
     M1 = Util.join(user.get_z(), message)
     # B4
-    e = Util.bytes_2_int(SM3().hash(M1))
+    e = Util.bytes_2_int(SM3.hash(M1))
     # B5
     t = (r + s) % curve.n
     if t == 0:

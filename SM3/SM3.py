@@ -21,7 +21,7 @@ class SM3:
             return 0x7A879D8A
 
     def __S(self, x: int, n: int):
-        n %= 32
+        n &= 0x1F
         return (x << n | x >> (32 - n)) & 0xFFFFFFFF
 
     def __FF(self, j: int, x: int, y: int, z: int):
@@ -45,7 +45,7 @@ class SM3:
     def __padding(self, b: bytearray):
         n = len(b) * 8
         b.append(0x80)
-        b += bytearray([0x00]) * ((56 - len(b) + 64) % 64)
+        b += bytearray([0x00]) * ((56 - len(b)) % 64)
         b += bytearray([n >> (8 * i) & 0xFF for i in range(8)][::-1])
 
     def __split(self, b: bytearray):
@@ -78,6 +78,8 @@ class SM3:
             b += x.to_bytes(4, byteorder='big', signed=False)
         return b
 
+
+hash = SM3().hash
 
 if __name__ == '__main__':
     sm3 = SM3()

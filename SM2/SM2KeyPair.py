@@ -16,7 +16,7 @@ class SM2KeyPair:
         self.private_key = SM2PrivateKey(d)
         self.public_key = SM2PublicKey(P)
 
-    # 6.2.1
+    # 1-6.2.1
     def public_key_is_valid(self):
         d, P = self.private_key.d, self.public_key.P
         if P.is_identity():
